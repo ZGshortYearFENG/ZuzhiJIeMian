@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         initRecyclerView();
+
     }
 
     private void initView() {
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mItems.add(new FeatureItem("公告栏", R.drawable.timg));
         mItems.add(new HeaderItem("当日工作台"));
 
+
         // TODO 网络请求
         mItems.add(new NoticeHeaderItem(12, 8));
 
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < 10; i++) {
             mItems.add(new NoticeItem("任务 " + i, R.drawable.timg));
         }
+
         mAdapter.setItems(mItems);
         mAdapter.notifyDataSetChanged();
     }
