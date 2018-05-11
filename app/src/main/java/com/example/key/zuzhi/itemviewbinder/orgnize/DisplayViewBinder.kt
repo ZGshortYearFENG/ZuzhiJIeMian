@@ -22,8 +22,8 @@ class DisplayViewBinder() : ItemViewBinder<DisplayItem, DisplayViewBinder.Displa
         holder.jobName.text = item.userJobName
         holder.avatar.setImageResource(R.drawable.timg)
 
+        // 点击
         holder.container.setOnClickListener {
-
             if (((adapter.items as Items).get(holder.adapterPosition) is DisplayItem)) {
                 val displayItem = (adapter.items as Items).get(holder.adapterPosition) as DisplayItem
                 if (!displayItem.isExpand) {

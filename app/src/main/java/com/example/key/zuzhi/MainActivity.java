@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Items mItems = new Items();
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -59,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Data
         mItems.add(new HeaderItem("功能"));
-        mItems.add(new FeatureItem("组织分工", R.drawable.timg));
-        mItems.add(new FeatureItem("任务计划", R.drawable.timg));
-        mItems.add(new FeatureItem("员工管理", R.drawable.timg));
-        mItems.add(new FeatureItem("费用管理", R.drawable.timg));
-        mItems.add(new FeatureItem("资料文档", R.drawable.timg));
-        mItems.add(new FeatureItem("公告栏", R.drawable.timg));
+        mItems.add(new FeatureItem("组织分工", R.drawable.web_hi_res_512));
+        mItems.add(new FeatureItem("任务计划", R.drawable.web_hi_res_592));
+        mItems.add(new FeatureItem("员工管理", R.drawable.web_hi_res_5122));
+        mItems.add(new FeatureItem("费用管理", R.drawable.web_hi_res_5612));
+        mItems.add(new FeatureItem("资料文档", R.drawable.web_hi_res_51002));
+        mItems.add(new FeatureItem("公告栏", R.drawable.web_hi_res_51552));
         mItems.add(new HeaderItem("当日工作台"));
 
 
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         mItems.add(new NoticeHeaderItem(12, 8));
 
         // task
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             mItems.add(new NoticeItem("任务 " + i, R.drawable.timg));
         }
 
