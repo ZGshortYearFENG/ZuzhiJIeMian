@@ -1,4 +1,4 @@
-package com.example.key.zuzhi.itemviewbinder.orgnize
+package com.example.key.zuzhi.itemviewbinder
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -9,14 +9,16 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.blankj.utilcode.util.ConvertUtils
-import com.blankj.utilcode.util.ScreenUtils
 import com.example.key.zuzhi.R
-import com.example.key.zuzhi.item.orgnize.DisplayDetailItem
+import com.example.key.zuzhi.event.LeaderMessageEvent
+import com.example.key.zuzhi.item.DisplayDetailItem
 import me.drakeet.multitype.ItemViewBinder
+import org.greenrobot.eventbus.EventBus
 
 class DisplayDetailViewBinder(val ctx: Context) : ItemViewBinder<DisplayDetailItem, DisplayDetailViewBinder.DisplayDetailItemViewHolder>() {
     override fun onBindViewHolder(holder: DisplayDetailItemViewHolder, item: DisplayDetailItem) {
         val group = holder.group
+        group.removeAllViews()
         if (group.childCount == 0)
             for (i in 0 until item.titles.size) {
 
@@ -29,6 +31,9 @@ class DisplayDetailViewBinder(val ctx: Context) : ItemViewBinder<DisplayDetailIt
                     text = item.contents[i]
                     textSize = 14f
                 }
+
+                Log.e("ViewBinder", "titles = " + title.text);
+                Log.e("ViewBinder", "titles = " + content.text);
 
                 group.addView(title)
                 group.addView(content)
@@ -43,9 +48,12 @@ class DisplayDetailViewBinder(val ctx: Context) : ItemViewBinder<DisplayDetailIt
                 lpc.topMargin = ConvertUtils.dp2px(2f)
                 content.layoutParams = lpc
 
-
-
             }
+
+        // 事件通知
+        group.setOnClickListener(View.OnClickListener {
+            EventBus.getDefault().post(LeaderMessageEvent(2));
+        })
     }
 
     override fun onCreateViewHolder(inflater: LayoutInflater, parent: ViewGroup): DisplayDetailItemViewHolder = DisplayDetailItemViewHolder(inflater.inflate(R.layout.item_display_detail, parent, false))

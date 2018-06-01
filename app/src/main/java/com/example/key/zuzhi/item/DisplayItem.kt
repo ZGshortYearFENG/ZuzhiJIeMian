@@ -1,4 +1,4 @@
-package com.example.key.zuzhi.item.orgnize
+package com.example.key.zuzhi.item
 
 data class DisplayItem(val userName: String,
                        val userJobName: String,

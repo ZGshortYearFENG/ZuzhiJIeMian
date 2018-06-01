@@ -1,4 +1,4 @@
-package com.example.key.zuzhi;
+package com.example.key.zuzhi.ui.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.key.zuzhi.R;
 import com.example.key.zuzhi.item.FeatureItem;
 import com.example.key.zuzhi.item.HeaderItem;
 import com.example.key.zuzhi.item.NoticeHeaderItem;
@@ -14,15 +15,18 @@ import com.example.key.zuzhi.itemviewbinder.FeatureItemViewBinder;
 import com.example.key.zuzhi.itemviewbinder.HeaderItemViewBinder;
 import com.example.key.zuzhi.itemviewbinder.NoticeHeaderItemViewBinder;
 import com.example.key.zuzhi.itemviewbinder.NoticeItemViewBinder;
+import com.example.key.zuzhi.network.RetrofitClient;
 
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     private RecyclerView mRecyclerView;
     private MultiTypeAdapter mAdapter;
     private Items mItems = new Items();
+
+    private MainContract.Presenter mPresenter;
 
     @Override
 
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView() {
         mAdapter = new MultiTypeAdapter();
         mAdapter.register(HeaderItem.class, new HeaderItemViewBinder());
-        mAdapter.register(FeatureItem.class, new FeatureItemViewBinder());
+        mAdapter.register(FeatureItem.class, new FeatureItemViewBinder(this));
         mAdapter.register(NoticeHeaderItem.class, new NoticeHeaderItemViewBinder());
         mAdapter.register(NoticeItem.class, new NoticeItemViewBinder());
         GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
@@ -79,6 +83,20 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter.setItems(mItems);
         mAdapter.notifyDataSetChanged();
+
+
+        // TODO move to other area
+        RetrofitClient.cookie = null;
+
+        // MVP
+        new MainPresenter(this).subscribe();
+        mPresenter.login();
     }
 
+    // MVP
+
+    @Override
+    public void setPresenter(MainContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
 }

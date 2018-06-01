@@ -1,16 +1,14 @@
-package com.example.key.zuzhi.itemviewbinder.orgnize
+package com.example.key.zuzhi.itemviewbinder
 
-import android.graphics.BitmapFactory
 import android.support.v7.widget.RecyclerView
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.key.zuzhi.R
-import com.example.key.zuzhi.item.orgnize.DisplayDetailItem
-import com.example.key.zuzhi.item.orgnize.DisplayItem
+import com.example.key.zuzhi.item.DisplayDetailItem
+import com.example.key.zuzhi.item.DisplayItem
 import me.drakeet.multitype.ItemViewBinder
 import me.drakeet.multitype.Items
 
