@@ -10,32 +10,34 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.key.zuzhi.R;
-import com.example.key.zuzhi.item.DisplayDetailItem;
-import com.example.key.zuzhi.item.DisplayItem;
 import com.example.key.zuzhi.item.LeaderItem;
-import com.example.key.zuzhi.itemviewbinder.DisplayDetailViewBinder;
-import com.example.key.zuzhi.itemviewbinder.DisplayViewBinder;
+import com.example.key.zuzhi.itemviewbinder.LeaderDetailItemViewBinder;
 import com.example.key.zuzhi.itemviewbinder.LeaderItemViewBinder;
-import com.example.key.zuzhi.network.RetrofitClient;
 import com.example.key.zuzhi.ui.base.BaseFragment;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import me.drakeet.multitype.ClassLinker;
+import me.drakeet.multitype.ItemViewBinder;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 public class LeaderFragment extends BaseFragment implements LeaderContract.View {
 
-    private MultiTypeAdapter mAdapter = new MultiTypeAdapter();
-    private RecyclerView mRecyclerView;
+    MultiTypeAdapter mAdapter = new MultiTypeAdapter();
+    Items mItem = new Items();
 
-    private Items mItem = new Items();
+    LeaderContract.Presenter mPresenter = new LeaderPresenter(this);
 
-    private LeaderContract.Presenter mPresenter;
+    @BindView(R.id.leader_recyclerview)
+    RecyclerView mRecyclerView;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_leader,null);
-        mRecyclerView = view.findViewById(R.id.leader_recyclerview);
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -43,15 +45,28 @@ public class LeaderFragment extends BaseFragment implements LeaderContract.View 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAdapter.register(LeaderItem.class,new LeaderItemViewBinder());
-        mAdapter.register(DisplayDetailItem.class , new DisplayDetailViewBinder(getContext()));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mAdapter.register(LeaderItem.class).to(
+                new LeaderItemViewBinder(),
+                new LeaderDetailItemViewBinder()
+        ).withClassLinker(new ClassLinker<LeaderItem>() {
+            @NonNull
+            @Override
+            public Class<? extends ItemViewBinder<LeaderItem, ?>> index(int position, @NonNull LeaderItem leaderItem) {
+                if (leaderItem.type == LeaderItem.Leader_Item) {
+                    return LeaderItemViewBinder.class;
+                } else {
+                    return LeaderDetailItemViewBinder.class;
+                }
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter.setItems(mItem);
         mAdapter.notifyDataSetChanged();
 
-        new LeaderPresenter(this).subscribe();
+        // Load Data
+        mPresenter.subscribe();
         mPresenter.load();
     }
 

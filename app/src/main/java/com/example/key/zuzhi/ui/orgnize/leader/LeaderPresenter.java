@@ -37,17 +37,14 @@ public class LeaderPresenter implements LeaderContract.Presenter {
                 .subscribe(new Observer<LeaderResponse>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(TAG, "onSubscribe: ");
                         mSubscriptions.add(d);
                     }
 
                     @Override
                     public void onNext(LeaderResponse selectResponse) {
-                        Log.d(TAG, "onNext: ");
-
                         Items items = new Items();
                         for (LeaderResponse.ObjBean s : selectResponse.obj) {
-                            items.add(new LeaderItem(s, false));
+                            items.add(new LeaderItem(s, false, LeaderItem.Leader_Item));
                         }
                         mView.onLoaded(items);
                     }
@@ -59,15 +56,13 @@ public class LeaderPresenter implements LeaderContract.Presenter {
 
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete: ");
                     }
                 });
     }
 
     @Override
     public void subscribe() {
-        Log.d(TAG, "subscribe: ");
-    }   
+    }
 
     @Override
     public void unsubscribe() {

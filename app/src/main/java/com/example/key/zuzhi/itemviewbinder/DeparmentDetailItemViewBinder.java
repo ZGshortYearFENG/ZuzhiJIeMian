@@ -4,34 +4,35 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.example.key.zuzhi.databinding.ItemDeparmentDetailBinding;
+import com.example.key.zuzhi.R;
 import com.example.key.zuzhi.item.DeparmentDetailItem;
 import com.example.key.zuzhi.item.DeparmentItem;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewBinder;
 
 public class DeparmentDetailItemViewBinder extends ItemViewBinder<DeparmentDetailItem, DeparmentDetailItemViewBinder.DeparmentDetailItemViewHolder> {
 
     static class DeparmentDetailItemViewHolder extends RecyclerView.ViewHolder {
 
-        public static DeparmentDetailItemViewHolder create(LayoutInflater inflater, ViewGroup parent) {
-            ItemDeparmentDetailBinding databinding = ItemDeparmentDetailBinding.inflate(inflater, parent, false);
-            return new DeparmentDetailItemViewHolder(databinding);
-        }
+        @BindView(R.id.deparment1)
+        TextView deparment;
+        @BindView(R.id.job1)
+        TextView job;
 
-        ItemDeparmentDetailBinding databinding;
-
-        public DeparmentDetailItemViewHolder(ItemDeparmentDetailBinding databinding) {
-            super(databinding.getRoot());
-            this.databinding = databinding;
+        public DeparmentDetailItemViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
         }
 
         public void onBind(DeparmentDetailItem item) {
-            databinding.setBean(item.objBean);
 
             StringBuilder builder = new StringBuilder();
             ArrayList<String> list = new ArrayList<>();
@@ -51,7 +52,7 @@ public class DeparmentDetailItemViewBinder extends ItemViewBinder<DeparmentDetai
                     builder.append(s + "\n");
                 }
             }
-            databinding.deparment1.setText(builder.toString());
+            deparment.setText(builder.toString());
 
 
             StringBuilder builder1 = new StringBuilder();
@@ -67,14 +68,14 @@ public class DeparmentDetailItemViewBinder extends ItemViewBinder<DeparmentDetai
                     builder1.append(s + "\n");
                 }
             }
-            databinding.job1.setText(builder1.toString());
+            job.setText(builder1.toString());
         }
     }
 
     @NonNull
     @Override
     protected DeparmentDetailItemViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        return DeparmentDetailItemViewHolder.create(inflater, parent);
+        return new DeparmentDetailItemViewHolder(inflater.inflate(R.layout.item_deparment_detail, parent, false));
     }
 
     @Override

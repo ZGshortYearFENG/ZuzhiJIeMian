@@ -1,6 +1,5 @@
 package com.example.key.zuzhi.ui.orgnize.deparment;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,33 +12,38 @@ import android.view.ViewGroup;
 
 import com.example.key.zuzhi.R;
 import com.example.key.zuzhi.data.Resource;
-import com.example.key.zuzhi.databinding.FragmentDeparmentBinding;
 import com.example.key.zuzhi.item.DeparmentDetailItem;
 import com.example.key.zuzhi.item.DeparmentItem;
 import com.example.key.zuzhi.itemviewbinder.DeparmentDetailItemViewBinder;
 import com.example.key.zuzhi.itemviewbinder.DeparmentItemViewBinder;
 import com.example.key.zuzhi.ui.base.BaseFragment;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 public class DeparmentFragment extends BaseFragment implements DeparmentContract.View {
 
-    public FragmentDeparmentBinding databinding;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
+
     public MultiTypeAdapter mAdapter = new MultiTypeAdapter();
     public DeparmentContract.Presenter mPresenter;
+    
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        databinding = DataBindingUtil.inflate(inflater, R.layout.fragment_deparment, container, false);
 
+        View rootView = inflater.inflate(R.layout.fragment_deparment, container, false);
+        ButterKnife.bind(this, rootView);
         mAdapter.register(DeparmentItem.class, new DeparmentItemViewBinder());
-        mAdapter.register(DeparmentDetailItem.class, new DeparmentDetailItemViewBinder());
-        databinding.recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        databinding.recyclerview.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mAdapter);
 
-        return databinding.getRoot();
+        return rootView;
     }
 
     @Override
@@ -54,8 +58,8 @@ public class DeparmentFragment extends BaseFragment implements DeparmentContract
 
     @Override
     public void onLoaded(Items items) {
-//        databinding.setResource(items);
-        databinding.setItems(items);
+        mAdapter.setItems(items);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
